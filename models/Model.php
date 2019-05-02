@@ -1,5 +1,13 @@
 <?php
 
+/*
+
+Modifier plein de truc, ça a été fait très vite et mal
+
+*/
+
+
+
 class Model {
 
     public function insert($query,$debug = false){
@@ -16,18 +24,16 @@ class Model {
     public static function findOne($id){
         $class = get_called_class();
         $object = DB::selectOne("select * from ".$class." where  id = ".$id);
-        return (new $class($object))->display();
+        return (new $class())->bind($object);
     }
 
     public static function findAll(){
-        echo "FIND ALL";
-
         $class = get_called_class();
         $allObjects = array();
 
-        $objects = DB::prepare("select * from ".get_called_class());
+        $objects = DB::select("select * from ".get_called_class());
         foreach($objects as $object){
-            $obj = (new $class($object))->display();
+            $obj = (new $class())->bind($object);
             array_push($allObjects, $obj);
         }
         return $allObjects;
@@ -41,7 +47,7 @@ class Model {
 
         $objects = DB::prepare("select * from ".$class." where ".$whereCondition);
         foreach($objects as $object){
-            $obj = (new $class($object))->display();
+            $obj = (new $class())->bind($object);
             array_push($allObjects, $obj);
         }
         return $allObjects;
@@ -57,15 +63,15 @@ class Model {
         return (new $class($object));
     }
 
-
+    
     public function bind($object){
         if($object !== null){
             $objectAttibutes = get_object_vars($object);
             foreach($objectAttibutes as $attibut => $value){
                $this->$attibut = $value;
             }
-            $this->setType();
         }
+        return $this;
     }
 
 
@@ -117,12 +123,6 @@ class Model {
         $res = $res->fetchObject(get_called_class());
         return $res;
     }
-
-    public function setType(){
-        if(isset($this->id))
-            $this->id = intval($this->id);
-    }
-
 
     public function display(){
         unset($this->table);

@@ -1,22 +1,27 @@
 <?php
 function get_header() {
-	echo <<<BET
+echo <<<HTL
 <!doctype html>
 <html lang="fr">
 <head>
-    <meta charset="utf-8">
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link rel="stylesheet" href="css/style.css">
+
     <title>Group Hotel</title>
     <script src="js/jquery.js"></script>
     <script src="js/jquery-ui.js"></script>
-BET;
+HTL;
 	
 }
 
 function get_footer() {
-	echo <<<BET
+echo <<<HTL
+    <script src="js/main.js"></script>
+
 </body>
 </html>
-BET;
+HTL;
 	
 }
 

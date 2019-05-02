@@ -5,9 +5,9 @@ class DB {
 
 	private $DB_NAME = "vincent-weber_projet_hotel";
 
-	private $DB_USERNAME = "144459_martin";
+	private $DB_USERNAME = "144459_bd_site";
 
-	private $DB_PASSWORD = "martinpelcat";
+	private $DB_PASSWORD = "connexionbdsite";
 
 	public $db;
 
@@ -29,6 +29,7 @@ class DB {
 		$res = (new static)
 			->db
 			->query($query);
+			$res = $res->fetchAll(PDO::FETCH_OBJ);
 		return $res;
 
 	}

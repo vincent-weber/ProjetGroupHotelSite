@@ -2,7 +2,9 @@
 class WelcomeController{
 
 	public function index() {
-		return view("welcomePage");
+
+		$hotels = Hotel::findAll();
+		return view("welcomePage",["hotels"=> $hotels]);
 	}
 
 }
