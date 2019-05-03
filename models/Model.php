@@ -56,11 +56,15 @@ class Model {
     public static function findOneWhere($whereCondition)
     {
         $class = get_called_class();
-        $object = DB::selectOne("select * from ".$class." where ".$whereCondition);
-        if($object === false){
-            return $object;
+        $object = DB::select("select * from ".$class." where ".$whereCondition);
+
+        if(count($object) == 1)
+        {
+            return (new $class())->bind($object[0]);
         }
-        return (new $class($object));
+        else 
+            return null;
+        
     }
 
     
@@ -76,12 +80,11 @@ class Model {
 
 
     public function save(){
-        $this->setType();
         $columnAndValues = [];
 
         $query = "insert into ".$this->table." (";
 
-        $columns = DB::prepare("DESCRIBE ".$this->table);
+        $columns = DB::select("DESCRIBE ".$this->table);
         foreach($columns as $column){
 
             $field = $column->Field;

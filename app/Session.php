@@ -19,4 +19,14 @@ class Session{
         if( isset($_SESSION[$key]))
             return unserialize($_SESSION[$key]);
     }
+
+    public static function unset($variable = null){
+        if($variable == null){
+            session_unset();
+        }
+        else
+        {
+            unset($_SESSION[$variable]);
+        }
+    }
 }

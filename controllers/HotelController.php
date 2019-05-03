@@ -1,5 +1,5 @@
 <?php
-class WelcomeController{
+class HotelController{
 
 	public function index() {
 

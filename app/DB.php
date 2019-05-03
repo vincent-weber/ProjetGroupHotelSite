@@ -31,8 +31,10 @@ class DB {
 			->query($query);
 			$res = $res->fetchAll(PDO::FETCH_OBJ);
 		return $res;
-
 	}
+
+
+	
 
 	public static function quote($query) {
 		$res = $this
