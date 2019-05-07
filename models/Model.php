@@ -13,6 +13,10 @@ class Model {
     public function insert($query,$debug = false){
         return DB::insert($query,$debug);
     }
+	public function update($set,$where,$debug = false){
+		$query = "update ". $this->table." set ".$set." where ". $where;
+        return DB::update($query,$debug);
+    }
 
     public function getWhereId($id){
         $object = DB::selectOne("select * from ".get_called_class()." where $this->primaryKey = $id");
@@ -45,7 +49,7 @@ class Model {
         $class = get_called_class();
         $allObjects = array();
 
-        $objects = DB::prepare("select * from ".$class." where ".$whereCondition);
+        $objects = DB::select("select * from ".$class." where ".$whereCondition);
         foreach($objects as $object){
             $obj = (new $class())->bind($object);
             array_push($allObjects, $obj);

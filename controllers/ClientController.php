@@ -62,8 +62,46 @@ class ClientController{
 
 
     public function moncompte(){
-
+		
     }
 
-
+	public function mesreservations(){
+		if(Session::has("connectedClient"))
+        {
+			$client = Session::get("connectedClient");
+            $reservations = Reservation::findAllWhere("num_cl=".$client->num_cl." ORDER BY dateAr_r DESC");
+			foreach($reservations as $reservation){
+				$reservation_chambre = ReservationChambre::findOneWhere("num_r=".$reservation->num_r);
+				
+				if($reservation_chambre !=null){
+					$hotels[$reservation->num_r] = Hotel::findOneWhere("num_h=".$reservation_chambre->num_h);
+				}
+			}
+			
+			return view("mesreservations",["reservations" => $reservations, "hotels" => $hotels]);
+        }
+		else{
+			return redirect("/");
+		}
+	}
+	public function verification($num_r, $num_h,$type){
+		$reservation = Reservation::findOneWhere("num_r=".$num_r);
+		$hotel = Hotel::findOneWhere("num_h=".$num_h);
+		if($type=="annulation"){
+			return view("verification",["reservation" => $reservation, "hotel" => $hotel, "annulation" => "oui"]);
+		}
+		else if($type=="confirmation"){
+			return view("verification",["reservation" => $reservation, "hotel" => $hotel, "confirmation" => "oui"]);
+		}
+	}
+	public function confirmation($num_r){
+		$reservation = Reservation::findOneWhere("num_r=".$num_r);
+		$reservation->update("etat_r='CONFIRMATION'","num_r =".$num_r);
+		return redirect("/mesreservations");
+	}
+	public function annulation($num_r){
+		$reservation = Reservation::findOneWhere("num_r=".$num_r);
+		$reservation->update("etat_r='ANNULATION'","num_r =".$num_r);
+		return redirect("/mesreservations");
+	}
 }

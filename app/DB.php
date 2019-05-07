@@ -53,9 +53,10 @@ class DB {
 	}
 
 	public function update($query) {
-		$this
-			->db
-			->query($query);
+		$db = (new static)->db;
+		$res = $db
+			->prepare($query);
+		$res->execute();
 	}
 
 	public function delete($query) {
