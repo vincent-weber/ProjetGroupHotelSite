@@ -53,6 +53,34 @@ body{
     margin-bottom: 20px;
     color: whitesmoke;
 }
+#welcomPageForm{
+    width: 70vw;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 10px;
+    
+}
+
+#welcomPageForm input, select, textarea{
+    height: 20px;
+    width:auto;
+    margin-left: auto;
+    margin-right: auto;
+    -ms-box-sizing:content-box;
+    -moz-box-sizing:content-box;
+    box-sizing:content-box;
+    -webkit-box-sizing:content-box; 
+    
+}
+
+#welcomPageForm input[type="submit"]{
+    padding-left: 2px;
+    padding-right: 2px;
+}
+
+#welcomPageForm input[type="number"]{
+    width: 150px;
+}
 
 #topMenu{
     height: 40px;

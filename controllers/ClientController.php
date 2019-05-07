@@ -60,10 +60,11 @@ class ClientController{
         return redirect("/");
     }
 
-
-    public function moncompte(){
-		
+    
+    public function monCompte(){
+        return view("monCompte");
     }
+    
 
 	public function mesreservations(){
 		if(Session::has("connectedClient"))

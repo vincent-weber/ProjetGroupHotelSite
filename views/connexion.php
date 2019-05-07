@@ -14,6 +14,7 @@
         <input name="password" type="password" placeholder="Mot de passe"/>
         <input type="submit" value="Connexion">
       <p class="message">Pas de compte ? <a href="/inscription">Créer un compte</a></p>
+      <p class="message"><a href="#">Mot de passe oublié ?</a></p>
 	  
                 </form>
         </div>

@@ -71,6 +71,18 @@ class Model {
         
     }
 
+    public static function select($query){
+        $class = get_called_class();
+        $allObjects = array();
+
+        $objects = DB::select($query);
+        foreach($objects as $object){
+            $obj = (new $class())->bind($object);
+            array_push($allObjects, $obj);
+        }
+        return $allObjects;
+    }
+
     
     public function bind($object){
         if($object !== null){
