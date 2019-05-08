@@ -178,3 +178,8 @@ body{
     border-radius: 5px;
 	
   }
+
+  #topMenu span a{
+    float: left;
+    margin-left: 0;
+  }
