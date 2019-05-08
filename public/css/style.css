@@ -25,7 +25,7 @@ body{
 }
 
 #welcomePageHotels{
-    margin-top: 50px;
+    margin-top: 10px;
     width: 70vw;
     margin-left: auto;
     margin-right: auto;
@@ -183,3 +183,14 @@ body{
     float: left;
     margin-left: 0;
   }
+
+.noHotelsFound{
+    text-align: center;
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: .75rem 1.25rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+    position: relative;
+}

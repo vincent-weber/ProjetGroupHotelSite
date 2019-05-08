@@ -19,21 +19,19 @@
    <?php component("topMenu"); ?>
 
 
-   
    <form id="welcomPageForm" action="/" method="post" >
-
    <select name="typeChambre">
    <option value="">-- Chambre --</option>
    <?php
       foreach($typeChambres as $typeChambre){
-         echo "<option value='$typeChambre->nom_t'>$typeChambre->nom_t - $typeChambre->prix_t €</option>";
+         if(isset($_POST["typeChambre"]) && $typeChambre->nom_t == $_POST["typeChambre"])
+            echo "<option value='$typeChambre->nom_t' selected>$typeChambre->nom_t - $typeChambre->prix_t €</option>";
+         else
+            echo "<option value='$typeChambre->nom_t'>$typeChambre->nom_t - $typeChambre->prix_t €</option>";
       }
    ?>
 
    </select>
-
-
-
 
    <input list="villes" name="ville" placeholder="Ville" <?php if(isset($_POST["ville"])) { echo "value='".$_POST["ville"]."'"; } ?> >
    <datalist id="villes">
@@ -43,39 +41,31 @@
       foreach($villes as $ville){
             echo "<option value='$ville->ville_h'>$ville->ville_h</option>";
       }
-
-
    ?>
 
-   
    </datalist>
 
-   <input type="number" name="nbPersonnes" width="50px" placeholder="Personnes" min="1" <?php if(isset($_POST["nbPersonnes"])) { echo "value='".$_POST["nbPersonnes"]."'"; } ?> required>
+   <input type="number" name="nbChambres" width="50px" placeholder="Chambres" min="1" <?php if(isset($_POST["nbChambres"])) { echo "value='".$_POST["nbChambres"]."'"; }else{ echo "value='1'";} ?> required>
 
-   <input type="date" name="dateArriver" <?php if(isset($_POST["dateArriver"])){
-      echo "value = '".$_POST["dateArriver"]."'";
-   }
-   else{
-      echo "value = '".date("Y-m-d")."'";
-   } 
-   ?> required>
+   <input type="date" name="dateArriver" <?php echo "min='".date("Y-m-d")."'"; if(isset($_POST["dateArriver"])){echo "value = '".$_POST["dateArriver"]."'";}else{echo "value = '".date("Y-m-d")."'";} ?> required>
 
    à 
 
-   <input type="date" name="dateDepart" <?php if(isset($_POST["dateDepart"])){
-      echo "value = '".$_POST["dateDepart"]."'";
-   }
-   else{
-      echo "value = '".date("Y-m-d",strtotime('tomorrow'))."'";
-   } 
-   ?> required>
+   <input type="date" name="dateDepart" <?php echo "min='".date("Y-m-d",strtotime('tomorrow'))."'"; if(isset($_POST["dateDepart"])){echo "value = '".$_POST["dateDepart"]."'";}else{echo "value = '".date("Y-m-d",strtotime('tomorrow'))."'";} ?> required>
       <input type="submit" value="Rechercher">
 
    </form>
 
       <div id="mapid"></div>
+
+
 <?php
-echo "      <div id='welcomePageHotels'>\n";
+
+
+echo "<div id='welcomePageHotels'>\n";
+if(isset($noHotels))
+      echo "<div class='noHotelsFound'>$noHotels</div>";
+
 foreach($hotels as $hotel){
 echo <<<HTL
 <div class="welcomePageHotel">
