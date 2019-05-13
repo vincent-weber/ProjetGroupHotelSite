@@ -7,12 +7,32 @@ class HotelController{
 		$typeChambres = TypeChambre::findAll();
 
 		if($request->getNbPostElements() > 0){
-			$query = "SELECT DISTINCT(ho.num_h),nom_h,ville_h,adresse_h,latitude_h,longitude_h FROM Hotel ho 
-			LEFT JOIN Chambre ch ON ch.num_h=ho.num_h
-			LEFT JOIN Historique hi ON hi.num_h=ch.num_h AND hi.num_c=ch.num_c";// todo
-			if(trim($request->input("ville")) !== ''){
-				$query .= " WHERE ho.ville_h = '".$request->input("ville")."'";
+
+
+			$dateArriver = $request->input("dateArriver");
+			$dateDepart = $request->input("dateDepart");
+
+			$ville = $request->input("ville");
+			$etatChambre = $request->input("typeChambre");
+
+			if(trim($ville) === ''){
+				$ville = "%";
 			}
+
+			if(trim($etatChambre) === ''){
+				$etatChambre = "%";
+			}
+
+			$query = "SELECT num_h,nom_h,ville_h,adresse_h,latitude_h,longitude_h FROM Hotel
+			WHERE ville_h LIKE '".$ville."' AND num_h NOT IN (
+			SELECT h.num_h
+						FROM Hotel h
+						JOIN Chambre c ON c.num_h=h.num_h
+						CROSS JOIN ReservationChambre rc ON c.num_h=rc.num_h AND c.num_c=rc.num_c
+						CROSS JOIN Reservation r ON r.num_r=rc.num_r
+						WHERE ('".$dateArriver."' BETWEEN r.dateAr_r AND r.dateDep_r OR '".$dateDepart."' BETWEEN r.dateAr_r AND r.dateDep_r) AND r.etat_r <> 'ANNULATION'  AND c.nom_t LIKE '".$etatChambre."'
+						GROUP BY h.num_h
+						HAVING COUNT(rc.num_c) + ".$request->input("nbChambres")." > (SELECT COUNT(*) FROM Chambre c2 WHERE h.num_h=c2.num_h GROUP BY c2.num_h))";
 
 			$hotels = Hotel::select($query);
 			if(count($hotels)==0){
