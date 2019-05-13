@@ -74,6 +74,7 @@ echo <<<HTL
    <div class="welcomePageHotelAdresse">$hotel->adresse_h</div>
    <div class="welcomePageHotelLatitude">$hotel->latitude_h</div>
    <div class="welcomePageHotelLongitude">$hotel->longitude_h</div>
+   <a href="/reserver/$hotel->num_h">Reserver</a>
 </div>
 HTL;
 }
