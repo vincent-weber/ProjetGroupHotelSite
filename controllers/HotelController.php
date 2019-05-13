@@ -57,6 +57,23 @@ class HotelController{
 		return view("welcomePage",["hotels"=> $hotels, "villes" => $villes, "typeChambres" => $typeChambres]);
 	}
 
-
+	public function hotel($numh){
+		$hotel = Hotel::findOneWhere("num_h=".$numh);
+		$services = DB::select("Select nom_s, prix_s from TypeService where nom_s in (select nom_s from Proposer where num_h =".$numh.")");
+		$typechambres = DB::select("Select * from TypeChambre where nom_t in (select distinct(nom_t) from Chambre where num_h=".$numh.")");
+		return view("hotel",["hotel"=> $hotel, "services" => $services, "typechambres" => $typechambres]);
+	}
+	
+	public function reserver($numh) {
+		if(Session::has("connectedClient"))
+        {
+			$typechambres = DB::select("Select * from TypeChambre where nom_t in (select distinct(nom_t) from Chambre where num_h=".$numh.")");
+            return view("reserver",["num_h" => $numh, "typechambres" => $typechambres]);
+        }
+        else{
+			return redirect("/inscription");
+		}
+		
+	}
 
 }

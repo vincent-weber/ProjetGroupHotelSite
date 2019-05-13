@@ -41,6 +41,10 @@ body{
     overflow: hidden;
     zoom: 1;
 }
+.welcomePageHotel a{
+    text-decoration: underline;
+	color: black;
+}
 
 #topMenuBar{
     height: 40px;
@@ -133,6 +137,13 @@ body{
     font-size: 14px;
   }
 
+.login-page .form label {
+    font-family: "Roboto", sans-serif;
+    font-size: 14px;
+	outline: 0;
+	margin: 0 0 15px;
+	padding : 15px;
+  }
   .form .message {
     margin: 15px 0 0;
     color: #b3b3b3;

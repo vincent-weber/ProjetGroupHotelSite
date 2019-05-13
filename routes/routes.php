@@ -2,6 +2,8 @@
 
 
 Route::post("/","HotelController@index");
+Route::get("/hotel/{numh}","HotelController@hotel");
+Route::get("/reserver/{numh}","HotelController@reserver");
 
 Route::post("/connexion","ClientController@connexion");
 Route::post("/inscription","ClientController@inscription");

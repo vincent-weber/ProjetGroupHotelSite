@@ -31,6 +31,8 @@ if(isset($reservations)){
 			}
 			else if($reservation->etat_r== "CONFIRMATION"){
 				echo "Confirmé<br>";
+				echo "<a href='/verification/".$reservation->num_r."/".$hotels[$reservation->num_r]->num_h."/annulation'>Annuler</a>";
+				
 			}
 			else if($reservation->etat_r== "ANNULATION"){
 				echo "Annulé<br>";

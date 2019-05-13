@@ -69,12 +69,11 @@ if(isset($noHotels))
 foreach($hotels as $hotel){
 echo <<<HTL
 <div class="welcomePageHotel">
-   <div class="welcomePageHotelNom">$hotel->nom_h</div>
+   <a href='/hotel/$hotel->num_h'><div class="welcomePageHotelNom">$hotel->nom_h</div></a>
    <div class="welcomePageHotelVille">$hotel->ville_h</div>
    <div class="welcomePageHotelAdresse">$hotel->adresse_h</div>
    <div class="welcomePageHotelLatitude">$hotel->latitude_h</div>
    <div class="welcomePageHotelLongitude">$hotel->longitude_h</div>
-   <a href="/reserver/$hotel->num_h">Reserver</a>
 </div>
 HTL;
 }
