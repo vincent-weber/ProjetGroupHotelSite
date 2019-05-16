@@ -29,7 +29,7 @@ if($services[0]!= null) echo "<h2>Services proposés<br></h2>";
 foreach($services as $service){
 	echo $service->nom_s." : ". $service->prix_s."€<br>";
 }
-echo "<a href='/reserver/".$hotel->num_h."'>Réserver</a>";
+echo "<br><a href='/reserver/".$hotel->num_h."'>Réserver</a>";
 echo "</div>";
 echo "</div>";
 ?>

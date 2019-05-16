@@ -60,7 +60,10 @@ class DB {
 	}
 
 	public function delete($query) {
-
+		$db = (new static)->db;
+		$res = $db
+			->prepare($query);
+		$res->execute();
 	}
 }
 

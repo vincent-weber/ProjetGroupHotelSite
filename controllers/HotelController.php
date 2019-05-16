@@ -75,5 +75,72 @@ class HotelController{
 		}
 		
 	}
+	
+	public function reservation($request){
+		if($request->getNbPostElements() > 0){
+			$num_h = $request->input("num_h");
+			$nom_t = $request->input("typeChambre");
+			$dateDepart = $request->input("dateDepart");
+			$dateArriver = $request->input("dateArriver");
+			$nbPersonnes = $request->input("nbPersonnes");
+			$nbChambres = $request->input("nbChambres");
+			$chambresdispo = Chambre::findAllWhere("nom_t='"
+				.$nom_t."' and num_h =".$num_h.
+				" and num_c not in ( Select num_c from Historique where num_h=".$num_h.
+				" and  ('".$dateArriver."' BETWEEN date_deb AND date_fin OR '".$dateDepart."' BETWEEN date_deb AND date_fin))");
+			if (count($chambresdispo)<$nbChambres){
+				$typechambres = DB::select("Select * from TypeChambre where nom_t in (select distinct(nom_t) from Chambre where num_h=".$num_h.")");
+				return view("reserver" ,["num_h" => $num_h, "typechambres" => $typechambres, "error" => "pas assez de chambres disponibles"]);
+			}
+			$nbLits = TypeChambre::findOneWhere("nom_t='".$nom_t."'");
+			if($nbPersonnes>($nbLits->nbLits_t*$nbChambres*2)){
+				$typechambres = DB::select("Select * from TypeChambre where nom_t in (select distinct(nom_t) from Chambre where num_h=".$num_h.")");
+				return view("reserver" ,["num_h" => $num_h, "typechambres" => $typechambres, "error" => "trop de personnes pour ce nombre de chambres"]);
+			}
+			
+			$typeChambre=TypeChambre::findOneWhere("nom_t='".$nom_t."'");
+			
+			$reservation = new Reservation;
+			$reservation->dateAr_r = $dateArriver;
+			$reservation->dateDep_r = $dateDepart;
+			$reservation->nbPersonnes_r = $nbPersonnes;
+			$reservation->etat_r="ATTENTE_CONFIRMATION";
+			$reservation->prixTotal_r=($typeChambre->prix_t*$nbChambres);
+			$reservation->reduction_r=0;
+			$reservation->num_cl=Session::get("connectedClient")->num_cl;
+			try{
+				$reservation->save();
+			}
+			catch(Exception $e){
+				$typechambres = DB::select("Select * from TypeChambre where nom_t in (select distinct(nom_t) from Chambre where num_h=".$num_h.")");
+				return view("reserver" ,["num_h" => $num_h, "typechambres" => $typechambres, "error" => "réservation échoué"]);
+			
+			}
+			$n=0;
+			foreach($chambresdispo as $chambre){
+				$reservationChambre = new ReservationChambre;
+				$reservationChambre->num_r=$reservation->num_r;
+				$reservationChambre->num_h=$num_h;
+				$reservationChambre->num_c=$chambre->num_c;
+				$historique = new Historique;
+				$historique->type_hist="Reservation";
+				$historique->date_deb=$dateArriver;
+				$historique->date_fin=$dateDepart;
+				$historique->num_h=$num_h;
+				$historique->num_c=$chambre->num_c;
+				try{
+					$reservationChambre->save();
+					$historique->save();
+				}
+				catch(Exception $e){
+					$typechambres = DB::select("Select * from TypeChambre where nom_t in (select distinct(nom_t) from Chambre where num_h=".$num_h.")");
+					return view("reserver" ,["num_h" => $num_h, "typechambres" => $typechambres, "error" => "réservation échoué"]);
+				}
+				$n=$n+1;
+				if($nbChambres==$n)redirect("/mesreservations");
+			}
+			
+		}
+	}
 
 }

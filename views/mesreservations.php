@@ -23,16 +23,22 @@ if(isset($reservations)){
 			echo "Date d'arrivée : ".date("d/m/Y",strtotime($reservation->dateAr_r))."<br>";
 			echo "Date de départ : ".date("d/m/Y",strtotime($reservation->dateDep_r))."<br>";
 			echo "Nombre de personnes : ".$reservation->nbPersonnes_r."<br>";
-			echo "<p class='prix'>".$reservation->prixTotal_r."€</p><br>";
-			if($reservation->etat_r== "ATTENTR_CONFIRMATION2"){
+			if($servicesdemander[$reservation->num_r]!=null) echo "Services compris : <br>";
+			foreach($servicesdemander[$reservation->num_r] as $service){
+				echo $service->nom_s."<br>";
+			}
+			echo "<p class='prix'>".($reservation->prixTotal_r-($reservation->prixTotal_r*$reservation->reduction_r))."€</p><br>";
+			
+			if($reservation->etat_r== "ATTENTE_CONFIRMATION"){
+				echo "Attente de confirmation<br><br>";
 				echo "<a href='/verification/".$reservation->num_r."/".$hotels[$reservation->num_r]->num_h."/confirmation'>Confirmer</a>";
 				echo "<a href='/verification/".$reservation->num_r."/".$hotels[$reservation->num_r]->num_h."/annulation'>Annuler</a>";
-				
+				echo "<a href='/services/".$reservation->num_r."/".$hotels[$reservation->num_r]->num_h."'>Ajouter un service</a>";
 			}
 			else if($reservation->etat_r== "CONFIRMATION"){
-				echo "Confirmé<br>";
+				echo "Confirmé<br><br>";
 				echo "<a href='/verification/".$reservation->num_r."/".$hotels[$reservation->num_r]->num_h."/annulation'>Annuler</a>";
-				
+				echo "<a href='/services/".$reservation->num_r."/".$hotels[$reservation->num_r]->num_h."'>Ajouter un service</a>";				
 			}
 			else if($reservation->etat_r== "ANNULATION"){
 				echo "Annulé<br>";

@@ -13,6 +13,7 @@
     <div class="form">
 	<h1>Réservation</h1><br>
         <form class="login-form" action="/reservation" method="post" >
+		<?php echo "<input type='hidden' name='num_h' ";if(isset($_POST["num_h"])) { echo "value='".$_POST["num_h"]."'"; }else{ echo "value='".$num_h."'";} echo">";?>
 		<label>Type de chambre :</label>
 		<select name="typeChambre">
 		<?php
@@ -28,7 +29,7 @@
 		<input type="number" name="nbPersonnes" width="50px" placeholder="Nombre de personnes" min="1" <?php if(isset($_POST["nbPersonnes"])) { echo "value='".$_POST["nbPersonnes"]."'"; }else{ echo "value='1'";} ?> required>
         <label>Nombre de chambres</label>
 		<input type="number" name="nbChambres" width="50px" placeholder="Nombre de chambres" min="1" <?php if(isset($_POST["nbChambres"])) { echo "value='".$_POST["nbChambres"]."'"; }else{ echo "value='1'";} ?> required>
-		<label>Date de d'arrivée</label>
+		<label>Date d'arrivée</label>
 		<input type="date" name="dateArriver" placeholder="Date d'arrivée" <?php echo "min='".date("Y-m-d")."'"; if(isset($_POST["dateArriver"])){echo "value = '".$_POST["dateArriver"]."'";}else{echo "value = '".date("Y-m-d")."'";} ?> required>
 		<label>Date de départ</label>
 		<input type="date" name="dateDepart" placeholder="Date de départ" <?php echo "min='".date("Y-m-d",strtotime('tomorrow'))."'"; if(isset($_POST["dateDepart"])){echo "value = '".$_POST["dateDepart"]."'";}else{echo "value = '".date("Y-m-d",strtotime('tomorrow'))."'";} ?> required>

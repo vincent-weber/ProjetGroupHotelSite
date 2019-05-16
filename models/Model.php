@@ -17,6 +17,11 @@ class Model {
 		$query = "update ". $this->table." set ".$set." where ". $where;
         return DB::update($query,$debug);
     }
+	
+	public function delete($where,$debug = false){
+		$query = "delete from ". $this->table." where ". $where;
+        return DB::delete($query,$debug);
+    }
 
     public function getWhereId($id){
         $object = DB::selectOne("select * from ".get_called_class()." where $this->primaryKey = $id");
